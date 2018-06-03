@@ -1,0 +1,39 @@
+postgres:
+  image: postgres:9.4.5
+  environment:
+    POSTGRES_USER: ec-ror4
+    POSTGRES_PASSWORD: psqlpwd
+  ports:
+    - '5432:5432'
+  volumes:
+    - ec-ror4-postgres:/var/lib/postgresql/data
+
+redis:
+  image: redis:3.0.5
+  ports:
+    - '6379:6379'
+  volumes:
+    - ec-ror4-redis:/var/lib/redis/data
+
+ec-ror4:
+  build: .
+  links:
+    - postgres
+    - redis
+  volumes:
+    - .:/ec-ror4
+  ports:
+    - '8000:8000'
+  env_file:
+    - .ec-ror4.env
+
+sidekiq:
+  build: .
+  command: bundle exec sidekiq -C config/sidekiq.yml
+  links:
+    - postgres
+    - redis
+  volumes:
+    - .:/ec-ror4
+  env_file:
+    - .ec-ror4.env
