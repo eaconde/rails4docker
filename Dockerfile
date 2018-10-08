@@ -17,7 +17,8 @@ RUN mkdir -p $INSTALL_PATH
 WORKDIR $INSTALL_PATH
 
 # Cache gems
-COPY Gemfile Gemfile
+COPY ./Gemfile ./Gemfile
+RUN gem install bundler
 RUN bundle install
 
 # Copy application code
