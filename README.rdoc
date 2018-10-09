@@ -1,6 +1,6 @@
 == README
 
-$ git pull
+$ git clone git@github.com:eaconde/rails4docker.git
 
 $ docker-compose build 
 
